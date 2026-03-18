@@ -1,23 +1,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0a0e13;
-  --surface: #111820;
-  --surface2: #161f2a;
-  --border: #1e2d3d;
-  --border2: #243447;
-  --accent: #00d4ff;
-  --accent2: #0095b3;
-  --green: #00e676;
-  --green-dim: #00e67622;
-  --amber: #ffab00;
-  --amber-dim: #ffab0015;
-  --red: #ff5252;
-  --text: #c9d8e8;
-  --text2: #7a94ad;
-  --text3: #3d5166;
-  --mono: 'IBM Plex Mono', monospace;
-  --sans: 'IBM Plex Sans', sans-serif;
+  --bg:       #e8edf2;
+  --surface:  #f0f4f7;
+  --surface2: #eaeff3;
+  --card:     #f5f8fa;
+  --border:   #d4dce4;
+  --border2:  #c2ced8;
+  --accent:   #3b6fa0;
+  --accent-l: #5389ba;
+  --green:    #2d8a5e;
+  --green-bg: #e8f5ef;
+  --green-br: #b6dece;
+  --text:     #1e2d3d;
+  --text2:    #526070;
+  --text3:    #8fa3b3;
+  --sans:     'DM Sans', system-ui, sans-serif;
 }
 
 html { font-size: 16px; }
@@ -29,7 +27,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar */
+input::placeholder { color: var(--text3); }
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }

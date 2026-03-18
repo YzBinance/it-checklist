@@ -34,7 +34,7 @@ const DEVICES = [
   { id: 29, name: "Rack Walmount 8U",                           location: "R. Admin Gedung 17",      desc: "Distribusi jaringan internet dan CCTV Gedung NDC" },
 ]
 
-const KEY = 'it_checklist_2026'
+const KEY     = 'it_checklist_2026'
 const dateKey = () => new Date().toISOString().split('T')[0]
 const today   = () => new Date().toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
 const nowTime = () => new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' })
@@ -43,37 +43,42 @@ function buildHTML(checks, notes, times) {
   const done = DEVICES.filter(d => checks[d.id]).length
   const rows = DEVICES.map(d => {
     const ok = checks[d.id]
-    return `<tr style="background:${ok?'#f0fff4':''};border-bottom:1px solid #e5e7eb">
-      <td style="padding:7px 10px;text-align:center;color:#9ca3af;font-size:12px">${d.id}</td>
-      <td style="padding:7px 10px;font-size:13px;font-weight:500">${d.name}</td>
-      <td style="padding:7px 10px;font-size:12px;color:#6b7280">${d.location}</td>
-      <td style="padding:7px 10px;text-align:center;color:${ok?'#16a34a':'#d1d5db'};font-size:15px">${ok?'✓':'—'}</td>
-      <td style="padding:7px 10px;font-size:12px;color:#16a34a">${times[d.id]||''}</td>
-      <td style="padding:7px 10px;font-size:12px;color:#6b7280">${notes[d.id]||''}</td>
+    return `<tr style="background:${ok ? '#edf7f2' : ''}">
+      <td style="padding:7px 10px;text-align:center;color:#94a3b8;font-size:12px;border-bottom:1px solid #e8edf2">${d.id}</td>
+      <td style="padding:7px 10px;font-size:13px;font-weight:500;border-bottom:1px solid #e8edf2">${d.name}</td>
+      <td style="padding:7px 10px;font-size:12px;color:#64748b;border-bottom:1px solid #e8edf2">${d.location}</td>
+      <td style="padding:7px 10px;text-align:center;color:${ok ? '#2d8a5e' : '#cbd5e1'};font-size:15px;border-bottom:1px solid #e8edf2">${ok ? '✓' : '—'}</td>
+      <td style="padding:7px 10px;font-size:12px;color:#2d8a5e;border-bottom:1px solid #e8edf2">${times[d.id] || ''}</td>
+      <td style="padding:7px 10px;font-size:12px;color:#64748b;border-bottom:1px solid #e8edf2">${notes[d.id] || ''}</td>
     </tr>`
   }).join('')
   return `<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">
-<title>Laporan Checklist IT</title>
-<style>body{font-family:Arial,sans-serif;margin:32px;color:#111}
-h2{margin:0 0 4px;font-size:17px}p{margin:0 0 16px;color:#6b7280;font-size:13px}
-.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:20px}
-table{width:100%;border-collapse:collapse}
-th{background:#1e3a5f;color:#fff;padding:8px 10px;text-align:left;font-size:12px}
-tfoot td{background:#f1f5f9;font-weight:600;padding:8px 10px;font-size:13px;border-top:2px solid #e2e8f0}
-@media print{body{margin:16px}}</style></head><body>
+<title>Laporan Checklist IT — ${today()}</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; margin: 32px; color: #1e2d3d; background: #f5f8fa; }
+  .wrap { background: #fff; padding: 28px; border-radius: 10px; max-width: 900px; margin: 0 auto; }
+  h2 { font-size: 17px; margin: 0 0 4px; color: #1e2d3d; }
+  .date { font-size: 12px; color: #8fa3b3; margin-bottom: 20px; }
+  .badge { display:inline-block; background:#dbeafe; color:#2563eb; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; margin-bottom:20px; }
+  table { width:100%; border-collapse:collapse; }
+  th { background:#2c4a6e; color:#fff; padding:9px 10px; text-align:left; font-size:11px; font-weight:600; }
+  tfoot td { background:#f0f4f7; font-weight:600; padding:8px 10px; font-size:13px; }
+  @media print { body { margin:16px; background:#fff } }
+</style></head>
+<body><div class="wrap">
 <h2>Laporan Checklist Perangkat IT Standby 24 Jam</h2>
-<p>${today()}</p>
-<div class="badge">Selesai: ${done} / ${DEVICES.length} perangkat (${Math.round(done/DEVICES.length*100)}%)</div>
+<div class="date">${today()}</div>
+<div class="badge">Selesai: ${done} / ${DEVICES.length} (${Math.round(done / DEVICES.length * 100)}%)</div>
 <table><thead><tr>
-<th style="width:36px">No</th><th>Nama Perangkat</th><th>Lokasi</th>
-<th style="width:56px;text-align:center">Status</th><th style="width:70px">Waktu</th><th>Catatan</th>
+  <th style="width:36px">No</th><th>Nama Perangkat</th><th>Lokasi</th>
+  <th style="width:56px;text-align:center">Status</th><th style="width:72px">Waktu</th><th>Catatan</th>
 </tr></thead><tbody>${rows}</tbody>
 <tfoot><tr><td colspan="3">Total Selesai</td><td colspan="3">${done} / ${DEVICES.length}</td></tr></tfoot>
-</table></body></html>`
+</table></div></body></html>`
 }
 
 function dlPDF(checks, notes, times) {
-  const w = window.open('','_blank')
+  const w = window.open('', '_blank')
   w.document.write(buildHTML(checks, notes, times))
   w.document.close()
   w.focus()
@@ -82,7 +87,10 @@ function dlPDF(checks, notes, times) {
 
 function dlWord(checks, notes, times) {
   const blob = new Blob(['\ufeff', buildHTML(checks, notes, times)], { type: 'application/msword' })
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `checklist-it-${dateKey()}.doc` })
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: `checklist-it-${dateKey()}.doc`
+  })
   a.click()
 }
 
@@ -99,12 +107,17 @@ export default function App() {
     setReady(true)
     try {
       const s = JSON.parse(localStorage.getItem(KEY) || '{}')
-      if (s.date === dateKey()) { setChecks(s.checks||{}); setNotes(s.notes||{}); setTimes(s.times||{}) }
+      if (s.date === dateKey()) {
+        setChecks(s.checks || {})
+        setNotes(s.notes  || {})
+        setTimes(s.times  || {})
+      }
     } catch {}
   }, [])
 
-  const persist = useCallback((c,n,t) => {
-    try { localStorage.setItem(KEY, JSON.stringify({ date:dateKey(), checks:c, notes:n, times:t })) } catch {}
+  const persist = useCallback((c, n, t) => {
+    try { localStorage.setItem(KEY, JSON.stringify({ date: dateKey(), checks: c, notes: n, times: t })) }
+    catch {}
   }, [])
 
   const toggle = id => {
@@ -112,19 +125,22 @@ export default function App() {
     const nt = checks[id] ? { ...times, [id]: undefined } : { ...times, [id]: nowTime() }
     setChecks(nc); setTimes(nt); persist(nc, notes, nt)
   }
-  const note = (id, v) => { const nn={...notes,[id]:v}; setNotes(nn); persist(checks,nn,times) }
+  const setNote = (id, v) => {
+    const nn = { ...notes, [id]: v }
+    setNotes(nn); persist(checks, nn, times)
+  }
   const reset = () => {
-    if (!confirm('Reset semua checklist?')) return
+    if (!confirm('Reset semua checklist hari ini?')) return
     setChecks({}); setNotes({}); setTimes({})
     localStorage.removeItem(KEY)
   }
 
   const done  = DEVICES.filter(d => checks[d.id]).length
   const total = DEVICES.length
-  const pct   = Math.round(done/total*100)
+  const pct   = Math.round(done / total * 100)
 
   const list = DEVICES.filter(d => {
-    const mf = filter==='all' || (filter==='done' ? checks[d.id] : !checks[d.id])
+    const mf = filter === 'all' || (filter === 'done' ? checks[d.id] : !checks[d.id])
     const q  = search.toLowerCase()
     return mf && (!q || d.name.toLowerCase().includes(q) || d.location.toLowerCase().includes(q))
   })
@@ -132,114 +148,157 @@ export default function App() {
   if (!ready) return null
 
   return (
-    <div style={{ maxWidth:600, margin:'0 auto', minHeight:'100dvh', background:'#f8fafc' }}>
+    <div style={{ maxWidth: 600, margin: '0 auto', minHeight: '100dvh' }}>
 
       {/* ── HEADER ── */}
-      <div style={c.header}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+      <div style={s.header}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <div style={c.title}>IT Standby Checklist</div>
-            <div style={c.sub}>{today()}</div>
+            <div style={s.eyebrow}>PERANGKAT IT · 2026</div>
+            <div style={s.title}>Standby Checklist</div>
+            <div style={s.date}>{today()}</div>
           </div>
-          <button onClick={reset} style={c.iconBtn}>↺</button>
+          <button onClick={reset} style={s.iconBtn} title="Reset hari ini">↺</button>
         </div>
 
-        <div style={c.progressWrap}>
-          <div style={c.track}><div style={{ ...c.fill, width:`${pct}%`, background: pct===100?'#16a34a':'#2563eb' }} /></div>
-          <span style={{ ...c.pctText, color: pct===100?'#16a34a':'#2563eb' }}>{done}/{total}</span>
+        {/* Progress */}
+        <div style={s.progressWrap}>
+          <div style={s.track}>
+            <div style={{
+              ...s.fill,
+              width: `${pct}%`,
+              background: pct === 100 ? '#2d8a5e' : '#3b6fa0'
+            }} />
+          </div>
+          <span style={{ ...s.pct, color: pct === 100 ? '#2d8a5e' : '#3b6fa0' }}>
+            {done}/{total}
+          </span>
         </div>
 
-        <input style={c.search} placeholder="Cari perangkat atau lokasi..."
-          value={search} onChange={e => setSearch(e.target.value)} />
+        {/* Search */}
+        <input
+          style={s.search}
+          placeholder="Cari perangkat atau lokasi..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
 
-        <div style={c.tabs}>
-          {[['all','Semua'],['pending','Belum'],['done','Selesai']].map(([f,l]) => (
+        {/* Filter tabs */}
+        <div style={s.tabs}>
+          {[['all', 'Semua'], ['pending', 'Belum'], ['done', 'Selesai']].map(([f, l]) => (
             <button key={f} onClick={() => setFilter(f)}
-              style={{ ...c.tab, ...(filter===f ? c.tabOn : {}) }}>{l}</button>
+              style={{ ...s.tab, ...(filter === f ? s.tabOn : {}) }}>
+              {l}
+            </button>
           ))}
         </div>
       </div>
 
       {/* ── LIST ── */}
-      <div style={{ padding:'10px 14px 100px' }}>
-        {list.length === 0 && <div style={c.empty}>Tidak ada hasil</div>}
+      <div style={s.list}>
+        {list.length === 0 && <div style={s.empty}>Tidak ada hasil</div>}
+
         {list.map(d => {
           const ok = !!checks[d.id]
           return (
-            <div key={d.id} style={{ ...c.card, ...(ok ? c.cardOk : {}) }}>
-              <div style={{ display:'flex', gap:10 }}>
+            <div key={d.id} style={{ ...s.card, ...(ok ? s.cardOk : {}) }}>
+              <div style={{ display: 'flex', gap: 11, alignItems: 'flex-start' }}>
+
+                {/* Checkbox */}
                 <button onClick={() => toggle(d.id)}
-                  style={{ ...c.box, ...(ok ? c.boxOk : {}) }}>
-                  {ok && '✓'}
+                  style={{ ...s.box, ...(ok ? s.boxOk : {}) }}>
+                  {ok && (
+                    <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                      <path d="M1 5l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
                 </button>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{ ...c.name, ...(ok ? c.nameDone : {}) }}>
-                    <span style={c.num}>#{d.id} </span>{d.name}
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ ...s.name, ...(ok ? s.nameDone : {}) }}>
+                    <span style={s.num}>#{String(d.id).padStart(2,'0')} </span>
+                    {d.name}
                   </div>
-                  <div style={c.loc}>
+                  <div style={s.loc}>
                     {d.location}
-                    {times[d.id] && <span style={c.stamp}> · {times[d.id]}</span>}
+                    {times[d.id] && <span style={s.stamp}> · {times[d.id]}</span>}
                   </div>
-                  <div style={c.desc}>{d.desc}</div>
+                  <div style={s.desc}>{d.desc}</div>
                 </div>
               </div>
-              <input style={c.noteInput} placeholder="Catatan..."
-                value={notes[d.id]||''} onChange={e => note(d.id, e.target.value)} />
+
+              {/* Note */}
+              <div style={s.noteLine}>
+                <input
+                  style={s.noteInput}
+                  placeholder="Tambah catatan..."
+                  value={notes[d.id] || ''}
+                  onChange={e => setNote(d.id, e.target.value)}
+                />
+              </div>
             </div>
           )
         })}
       </div>
 
       {/* ── BOTTOM BAR ── */}
-      <div style={c.bar}>
-        <button onClick={() => setPreview(true)} style={c.previewBtn}>Preview Laporan</button>
-        <button onClick={() => dlPDF(checks,notes,times)}  style={c.dlBtn}>↓ PDF</button>
-        <button onClick={() => dlWord(checks,notes,times)} style={c.dlBtn}>↓ Word</button>
+      <div style={s.bar}>
+        <button onClick={() => setPreview(true)} style={s.previewBtn}>
+          Preview Laporan
+        </button>
+        <button onClick={() => dlPDF(checks, notes, times)}  style={s.dlBtn}>↓ PDF</button>
+        <button onClick={() => dlWord(checks, notes, times)} style={s.dlBtn}>↓ Word</button>
       </div>
 
       {/* ── PREVIEW MODAL ── */}
       {preview && (
-        <div style={c.overlay} onClick={() => setPreview(false)}>
-          <div style={c.sheet} onClick={e => e.stopPropagation()}>
-            <div style={c.sheetHead}>
-              <span style={c.sheetTitle}>Preview Laporan</span>
-              <button onClick={() => setPreview(false)} style={c.closeBtn}>✕</button>
+        <div style={s.overlay} onClick={() => setPreview(false)}>
+          <div style={s.sheet} onClick={e => e.stopPropagation()}>
+
+            <div style={s.sheetHead}>
+              <span style={s.sheetTitle}>Preview Laporan</span>
+              <button onClick={() => setPreview(false)} style={s.closeBtn}>✕</button>
             </div>
 
-            <div style={{ overflowY:'auto', flex:1, padding:16 }}>
-              {/* Summary cards */}
-              <div style={c.sumRow}>
+            <div style={{ overflowY: 'auto', flex: 1, padding: 16 }}>
+
+              {/* Summary */}
+              <div style={s.sumRow}>
                 {[
-                  { label:'Selesai',  val:done,       color:'#16a34a' },
-                  { label:'Belum',    val:total-done,  color:'#dc2626' },
-                  { label:'Progress', val:`${pct}%`,   color:'#2563eb' },
+                  { label: 'Selesai',  val: done,       color: '#2d8a5e' },
+                  { label: 'Belum',    val: total-done,  color: '#c0392b' },
+                  { label: 'Progress', val: `${pct}%`,   color: '#3b6fa0' },
                 ].map(item => (
-                  <div key={item.label} style={c.sumCard}>
-                    <div style={{ fontSize:22, fontWeight:700, color:item.color }}>{item.val}</div>
-                    <div style={{ fontSize:11, color:'#94a3b8', marginTop:2 }}>{item.label}</div>
+                  <div key={item.label} style={s.sumCard}>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: item.color }}>{item.val}</div>
+                    <div style={{ fontSize: 11, color: '#8fa3b3', marginTop: 2 }}>{item.label}</div>
                   </div>
                 ))}
               </div>
 
-              {/* Preview table */}
-              <div style={{ overflowX:'auto', borderRadius:8, border:'1px solid #e2e8f0' }}>
-                <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12 }}>
+              {/* Table */}
+              <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid #d4dce4' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                   <thead>
-                    <tr>{['No','Perangkat','Lokasi','✓','Waktu','Catatan'].map(h => (
-                      <th key={h} style={c.th}>{h}</th>
-                    ))}</tr>
+                    <tr>
+                      {['No', 'Perangkat', 'Lokasi', '✓', 'Waktu', 'Catatan'].map(h => (
+                        <th key={h} style={s.th}>{h}</th>
+                      ))}
+                    </tr>
                   </thead>
                   <tbody>
-                    {DEVICES.map((d,i) => {
+                    {DEVICES.map((d, i) => {
                       const ok = !!checks[d.id]
                       return (
-                        <tr key={d.id} style={{ background: ok ? '#f0fff4' : i%2===0 ? '#fff' : '#f9fafb' }}>
-                          <td style={{ ...c.td, textAlign:'center', color:'#9ca3af' }}>{d.id}</td>
-                          <td style={{ ...c.td, fontWeight:500 }}>{d.name}</td>
-                          <td style={{ ...c.td, color:'#6b7280' }}>{d.location}</td>
-                          <td style={{ ...c.td, textAlign:'center', color: ok?'#16a34a':'#d1d5db', fontSize:14 }}>{ok?'✓':'—'}</td>
-                          <td style={{ ...c.td, color:'#16a34a', whiteSpace:'nowrap' }}>{times[d.id]||''}</td>
-                          <td style={{ ...c.td, color:'#6b7280' }}>{notes[d.id]||''}</td>
+                        <tr key={d.id} style={{
+                          background: ok ? '#edf7f2' : i % 2 === 0 ? '#f5f8fa' : '#f0f4f7'
+                        }}>
+                          <td style={{ ...s.td, textAlign: 'center', color: '#8fa3b3' }}>{d.id}</td>
+                          <td style={{ ...s.td, fontWeight: 500 }}>{d.name}</td>
+                          <td style={{ ...s.td, color: '#526070' }}>{d.location}</td>
+                          <td style={{ ...s.td, textAlign: 'center', color: ok ? '#2d8a5e' : '#c9d6df', fontSize: 14 }}>{ok ? '✓' : '—'}</td>
+                          <td style={{ ...s.td, color: '#2d8a5e', whiteSpace: 'nowrap' }}>{times[d.id] || ''}</td>
+                          <td style={{ ...s.td, color: '#526070' }}>{notes[d.id] || ''}</td>
                         </tr>
                       )
                     })}
@@ -248,9 +307,15 @@ export default function App() {
               </div>
             </div>
 
-            <div style={c.sheetFoot}>
-              <button onClick={() => dlPDF(checks,notes,times)}  style={{ ...c.dlBtnLg, background:'#1e3a5f' }}>↓ Download PDF</button>
-              <button onClick={() => dlWord(checks,notes,times)} style={{ ...c.dlBtnLg, background:'#2563eb' }}>↓ Download Word</button>
+            <div style={s.sheetFoot}>
+              <button onClick={() => dlPDF(checks, notes, times)}
+                style={{ ...s.dlBtnLg, background: '#2c4a6e' }}>
+                ↓ Download PDF
+              </button>
+              <button onClick={() => dlWord(checks, notes, times)}
+                style={{ ...s.dlBtnLg, background: '#3b6fa0' }}>
+                ↓ Download Word
+              </button>
             </div>
           </div>
         </div>
@@ -259,103 +324,143 @@ export default function App() {
   )
 }
 
-const c = {
+const s = {
   header: {
-    background:'#fff', borderBottom:'1px solid #e2e8f0',
-    padding:'14px 14px 0', position:'sticky', top:0, zIndex:50,
+    background: '#dde4eb',
+    borderBottom: '1px solid #c8d2db',
+    padding: '16px 16px 0',
+    position: 'sticky', top: 0, zIndex: 50,
   },
-  title: { fontSize:17, fontWeight:700, color:'#0f172a' },
-  sub:   { fontSize:11, color:'#94a3b8', marginTop:2, marginBottom:12 },
+  eyebrow: {
+    fontSize: 10, fontWeight: 600, letterSpacing: '0.1em',
+    color: '#3b6fa0', marginBottom: 4, textTransform: 'uppercase',
+  },
+  title: { fontSize: 20, fontWeight: 700, color: '#1e2d3d', letterSpacing: '-0.01em' },
+  date:  { fontSize: 11, color: '#8fa3b3', marginTop: 2, marginBottom: 14 },
   iconBtn: {
-    background:'#f1f5f9', border:'1px solid #e2e8f0', borderRadius:7,
-    width:34, height:34, fontSize:15, cursor:'pointer', color:'#64748b',
+    background: '#cdd6df', border: '1px solid #b8c5d0',
+    borderRadius: 8, width: 34, height: 34, cursor: 'pointer',
+    fontSize: 15, color: '#526070', display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
-  progressWrap: { display:'flex', alignItems:'center', gap:8, marginBottom:10 },
-  track: { flex:1, height:4, background:'#e2e8f0', borderRadius:2, overflow:'hidden' },
-  fill:  { height:'100%', borderRadius:2, transition:'width 0.3s, background 0.3s' },
-  pctText: { fontSize:12, fontWeight:700, minWidth:32, textAlign:'right' },
+  progressWrap: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 },
+  track: { flex: 1, height: 5, background: '#c8d2db', borderRadius: 3, overflow: 'hidden' },
+  fill:  { height: '100%', borderRadius: 3, transition: 'width 0.35s ease, background 0.3s' },
+  pct:   { fontSize: 12, fontWeight: 700, minWidth: 36, textAlign: 'right' },
   search: {
-    width:'100%', padding:'7px 11px', border:'1px solid #e2e8f0', borderRadius:7,
-    fontSize:13, outline:'none', background:'#f8fafc', color:'#0f172a', marginBottom:8,
+    width: '100%', padding: '8px 12px',
+    border: '1px solid #c8d2db', borderRadius: 8,
+    fontSize: 13, outline: 'none',
+    background: '#e8edf2', color: '#1e2d3d',
+    marginBottom: 10,
   },
-  tabs: { display:'flex', gap:6, paddingBottom:10 },
-  tab:  { padding:'4px 14px', borderRadius:20, border:'1px solid #e2e8f0', background:'#f8fafc', color:'#64748b', fontSize:12, cursor:'pointer' },
-  tabOn:{ background:'#eff6ff', border:'1px solid #bfdbfe', color:'#2563eb', fontWeight:600 },
+  tabs: { display: 'flex', gap: 6, paddingBottom: 12 },
+  tab: {
+    padding: '5px 14px', borderRadius: 20,
+    border: '1px solid #c8d2db', background: '#e0e8ef',
+    color: '#526070', fontSize: 12, cursor: 'pointer',
+    transition: 'all 0.15s',
+  },
+  tabOn: {
+    background: '#3b6fa0', border: '1px solid #3b6fa0',
+    color: '#fff', fontWeight: 600,
+  },
+
+  list: { padding: '12px 14px 110px' },
 
   card: {
-    background:'#fff', border:'1px solid #e2e8f0', borderRadius:10,
-    padding:12, marginBottom:8,
+    background: '#eef2f6',
+    border: '1px solid #d4dce4',
+    borderRadius: 10, padding: 13, marginBottom: 8,
+    transition: 'border-color 0.2s, background 0.2s',
   },
-  cardOk: { background:'#f0fff4', border:'1px solid #bbf7d0' },
+  cardOk: {
+    background: '#e6f4ed',
+    border: '1px solid #b6dece',
+  },
   box: {
-    width:24, height:24, borderRadius:6, border:'2px solid #cbd5e1', background:'transparent',
-    cursor:'pointer', flexShrink:0, fontSize:12, fontWeight:700, color:'transparent',
-    display:'flex', alignItems:'center', justifyContent:'center', marginTop:1,
+    width: 24, height: 24, borderRadius: 6,
+    border: '2px solid #b8c5d0', background: 'transparent',
+    cursor: 'pointer', flexShrink: 0,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    marginTop: 2, transition: 'all 0.15s',
   },
-  boxOk: { background:'#16a34a', border:'2px solid #16a34a', color:'#fff' },
-  num:   { color:'#d1d5db', fontWeight:400 },
-  name:  { fontSize:13, fontWeight:600, color:'#0f172a', lineHeight:1.4, marginBottom:2 },
-  nameDone: { color:'#94a3b8', textDecoration:'line-through' },
-  loc:   { fontSize:11, color:'#3b82f6', marginBottom:3 },
-  stamp: { color:'#16a34a' },
-  desc:  { fontSize:11, color:'#94a3b8', lineHeight:1.5 },
+  boxOk: { background: '#2d8a5e', border: '2px solid #2d8a5e' },
+  num:   { color: '#aab9c5', fontWeight: 400, fontSize: 12 },
+  name:  { fontSize: 13, fontWeight: 600, color: '#1e2d3d', lineHeight: 1.4, marginBottom: 3 },
+  nameDone: { color: '#8fa3b3', textDecoration: 'line-through', textDecorationColor: '#b6dece' },
+  loc:   { fontSize: 11, color: '#3b6fa0', marginBottom: 3 },
+  stamp: { color: '#2d8a5e', fontWeight: 500 },
+  desc:  { fontSize: 11, color: '#8fa3b3', lineHeight: 1.5 },
+  noteLine: {
+    marginTop: 10, paddingTop: 8,
+    borderTop: '1px solid #d4dce4',
+  },
   noteInput: {
-    width:'100%', marginTop:8, paddingTop:8,
-    borderTop:'1px solid #f1f5f9', border:'none',
-    outline:'none', fontSize:12, color:'#64748b',
-    background:'transparent', fontFamily:'inherit',
+    width: '100%', border: 'none', outline: 'none',
+    fontSize: 12, color: '#526070', background: 'transparent',
+    fontFamily: 'inherit',
   },
 
   bar: {
-    position:'fixed', bottom:0, left:0, right:0,
-    background:'#fff', borderTop:'1px solid #e2e8f0',
-    padding:'10px 14px', display:'flex', gap:8,
-    maxWidth:600, margin:'0 auto',
+    position: 'fixed', bottom: 0, left: 0, right: 0,
+    background: '#dde4eb', borderTop: '1px solid #c8d2db',
+    padding: '10px 14px', display: 'flex', gap: 8,
+    maxWidth: 600, margin: '0 auto',
   },
   previewBtn: {
-    flex:2, padding:'10px 0', borderRadius:8, border:'1px solid #2563eb',
-    background:'#fff', color:'#2563eb', fontWeight:600, fontSize:13, cursor:'pointer',
+    flex: 2, padding: '10px 0', borderRadius: 8,
+    border: '1px solid #3b6fa0', background: 'transparent',
+    color: '#3b6fa0', fontWeight: 600, fontSize: 13, cursor: 'pointer',
   },
   dlBtn: {
-    flex:1, padding:'10px 0', borderRadius:8, border:'none',
-    background:'#f1f5f9', color:'#475569', fontWeight:600, fontSize:13, cursor:'pointer',
+    flex: 1, padding: '10px 0', borderRadius: 8,
+    border: '1px solid #c8d2db', background: '#e0e8ef',
+    color: '#526070', fontWeight: 600, fontSize: 13, cursor: 'pointer',
   },
 
   overlay: {
-    position:'fixed', inset:0, background:'rgba(15,23,42,0.5)',
-    display:'flex', alignItems:'flex-end', zIndex:200,
+    position: 'fixed', inset: 0, background: 'rgba(18,28,40,0.45)',
+    display: 'flex', alignItems: 'flex-end', zIndex: 200,
   },
   sheet: {
-    background:'#fff', borderRadius:'14px 14px 0 0', width:'100%',
-    maxHeight:'90dvh', display:'flex', flexDirection:'column',
-    maxWidth:600, margin:'0 auto',
+    background: '#e8edf2', borderRadius: '14px 14px 0 0',
+    width: '100%', maxHeight: '90dvh',
+    display: 'flex', flexDirection: 'column',
+    maxWidth: 600, margin: '0 auto',
   },
   sheetHead: {
-    display:'flex', justifyContent:'space-between', alignItems:'center',
-    padding:'14px 16px', borderBottom:'1px solid #e2e8f0', flexShrink:0,
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    padding: '14px 16px', borderBottom: '1px solid #d4dce4', flexShrink: 0,
+    background: '#dde4eb', borderRadius: '14px 14px 0 0',
   },
-  sheetTitle: { fontSize:15, fontWeight:700, color:'#0f172a' },
+  sheetTitle: { fontSize: 15, fontWeight: 700, color: '#1e2d3d' },
   closeBtn: {
-    background:'#f1f5f9', border:'none', borderRadius:6,
-    width:28, height:28, cursor:'pointer', fontSize:12, color:'#64748b',
+    background: '#cdd6df', border: '1px solid #c0ccd5',
+    borderRadius: 6, width: 28, height: 28,
+    cursor: 'pointer', fontSize: 12, color: '#526070',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
 
-  sumRow:  { display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, marginBottom:14 },
+  sumRow:  { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, marginBottom: 14 },
   sumCard: {
-    background:'#f8fafc', border:'1px solid #e2e8f0',
-    borderRadius:8, padding:'10px 12px', textAlign:'center',
+    background: '#dde4eb', border: '1px solid #c8d2db',
+    borderRadius: 8, padding: '10px 12px', textAlign: 'center',
   },
-
-  th: { background:'#1e3a5f', color:'#fff', padding:'7px 8px', textAlign:'left', fontSize:11, whiteSpace:'nowrap' },
-  td: { padding:'6px 8px', fontSize:12, borderBottom:'1px solid #f1f5f9' },
+  th: {
+    background: '#2c4a6e', color: '#c8d8e8',
+    padding: '8px 9px', textAlign: 'left',
+    fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap',
+  },
+  td: { padding: '6px 9px', fontSize: 12, borderBottom: '1px solid #d4dce4' },
 
   sheetFoot: {
-    padding:'12px 16px', borderTop:'1px solid #e2e8f0',
-    display:'flex', gap:8, flexShrink:0,
+    padding: '12px 16px', borderTop: '1px solid #d4dce4',
+    display: 'flex', gap: 8, flexShrink: 0,
+    background: '#dde4eb',
   },
   dlBtnLg: {
-    flex:1, padding:'12px', borderRadius:8, border:'none',
-    color:'#fff', fontWeight:600, fontSize:13, cursor:'pointer',
+    flex: 1, padding: '12px', borderRadius: 8, border: 'none',
+    color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer',
   },
-  empty: { textAlign:'center', color:'#94a3b8', padding:'40px 0', fontSize:13 },
+  empty: { textAlign: 'center', color: '#8fa3b3', padding: '40px 0', fontSize: 13 },
 }
