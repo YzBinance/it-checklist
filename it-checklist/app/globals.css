@@ -1,0 +1,35 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0e13;
+  --surface: #111820;
+  --surface2: #161f2a;
+  --border: #1e2d3d;
+  --border2: #243447;
+  --accent: #00d4ff;
+  --accent2: #0095b3;
+  --green: #00e676;
+  --green-dim: #00e67622;
+  --amber: #ffab00;
+  --amber-dim: #ffab0015;
+  --red: #ff5252;
+  --text: #c9d8e8;
+  --text2: #7a94ad;
+  --text3: #3d5166;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+html { font-size: 16px; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
